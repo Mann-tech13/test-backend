@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import bcrypt from "bcryptjs";
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const App = () => {
   const [image, setImage] = useState("");
   const [password, setPassword] = useState('')
+
+  const count = useSelector((state) => state.counter.count); // Access state from 'counter' reducer
+  const dispatch = useDispatch();
+
+
   const submitImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -28,6 +35,13 @@ const App = () => {
         else console.log(result);
       })
   };
+  const onPlus = () => {
+    dispatch({type: 'INCREMENT'})
+  }
+  const onMinus = () => {
+    dispatch({type: 'DECREMENT'})
+
+  }
   return (
     <div>
       <div>
@@ -37,6 +51,12 @@ const App = () => {
       <div>
         <input type="password" onChange={(e) => setPassword(e.target.value)} />
         <button onClick={submitPassword}>submit</button>
+      </div>
+      <div>
+        <button onClick={onPlus}>plus</button>
+        <p>10</p>
+        <button onClick={onMinus}>Minus</button>
+
       </div>
     </div>
   );
