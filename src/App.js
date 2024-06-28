@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import bcrypt from "bcryptjs";
 
 const App = () => {
   const [image, setImage] = useState("");
+  const [password, setPassword] = useState('')
   const submitImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -17,11 +19,24 @@ const App = () => {
         console.log(json);
       })
   };
+  const submitPassword = () => {
+      const hashPwd = bcrypt.hashSync(password);
+      console.log(hashPwd);
+
+      bcrypt.compare(password, hashPwd, function (err, result){
+        if(err) throw "Error: " + err
+        else console.log(result);
+      })
+  };
   return (
     <div>
       <div>
         <input type="file" onChange={(e) => setImage(e.target.files[0])} />
         <button onClick={submitImage}>upload</button>
+      </div>
+      <div>
+        <input type="password" onChange={(e) => setPassword(e.target.value)} />
+        <button onClick={submitPassword}>submit</button>
       </div>
     </div>
   );
